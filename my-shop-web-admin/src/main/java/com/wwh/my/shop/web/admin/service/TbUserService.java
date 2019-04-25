@@ -14,5 +14,23 @@ import java.util.List;
  */
 public interface TbUserService {
 
-    public List<TbUser> selectAll();
+    List<TbUser> selectAll();
+
+    TbUser getById(Long id);
+
+    List<TbUser> selectByUsername(String username);
+
+    void insert(TbUser tbUser);
+
+    void delete(TbUser tbUser);
+
+    void update(TbUser tbUser);
+
+    /**
+     * 用户登录
+     * @param email
+     * @param password
+     * @return
+     */
+    TbUser login(String email, String password);
 }
