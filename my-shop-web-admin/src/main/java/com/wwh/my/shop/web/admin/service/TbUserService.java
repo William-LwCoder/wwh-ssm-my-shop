@@ -1,5 +1,6 @@
 package com.wwh.my.shop.web.admin.service;
 
+import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.domain.TbUser;
 
 import java.util.List;
@@ -20,11 +21,9 @@ public interface TbUserService {
 
     List<TbUser> selectByUsername(String username);
 
-    void insert(TbUser tbUser);
+    BaseResult save(TbUser tbUser);
 
     void delete(TbUser tbUser);
-
-    void update(TbUser tbUser);
 
     /**
      * 用户登录

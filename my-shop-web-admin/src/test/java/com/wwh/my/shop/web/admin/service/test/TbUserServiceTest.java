@@ -51,7 +51,8 @@ public class TbUserServiceTest {
     }
 
     @Test
-    public void testInsert() {
+    public void testSave() {
+        // 插入
         TbUser tbUser = new TbUser();
         tbUser.setUsername("William");
         tbUser.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
@@ -60,7 +61,18 @@ public class TbUserServiceTest {
         tbUser.setCreated(new Date());
         tbUser.setUpdated(new Date());
 
-        tbUserService.insert(tbUser);
+        tbUserService.save(tbUser);
+
+        // 更新
+        TbUser tbUser1 = tbUserService.getById(39L);
+
+        tbUser1.setUsername("William");
+        tbUser1.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        tbUser1.setEmail("William@wwh.com");
+        tbUser1.setPhone("15888888888");
+        tbUser1.setUpdated(new Date());
+
+        tbUserService.save(tbUser1);
     }
 
     @Test
@@ -69,19 +81,6 @@ public class TbUserServiceTest {
         tbUser.setId(38L);
 
         tbUserService.delete(tbUser);
-    }
-
-    @Test
-    public void testUpdate() {
-        TbUser tbUser = tbUserService.getById(39L);
-
-        tbUser.setUsername("William");
-        tbUser.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        tbUser.setEmail("William@wwh.com");
-        tbUser.setPhone("15888888888");
-        tbUser.setUpdated(new Date());
-
-        tbUserService.update(tbUser);
     }
 
     @Test
