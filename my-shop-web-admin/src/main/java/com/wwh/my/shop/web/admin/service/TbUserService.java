@@ -32,4 +32,11 @@ public interface TbUserService {
      * @return
      */
     TbUser login(String email, String password);
+
+    /**
+     * 搜索功能
+     * @param tbUser
+     * @return
+     */
+    List<TbUser> search(TbUser tbUser);
 }

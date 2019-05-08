@@ -88,6 +88,11 @@ public class TbUserServiceImpl implements TbUserService {
         return null;
     }
 
+    @Override
+    public List<TbUser> search(TbUser tbUser) {
+        return tbUserDao.search(tbUser);
+    }
+
     /**
      * 用户信息的有效性验证
      * @param tbUser

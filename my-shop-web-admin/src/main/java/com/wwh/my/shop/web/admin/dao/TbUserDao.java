@@ -60,4 +60,11 @@ public interface TbUserDao {
      * @return
      */
     TbUser getByEmail(String email);
+
+    /**
+     * 搜索
+     * @param tbUser
+     * @return
+     */
+    List<TbUser> search(TbUser tbUser);
 }

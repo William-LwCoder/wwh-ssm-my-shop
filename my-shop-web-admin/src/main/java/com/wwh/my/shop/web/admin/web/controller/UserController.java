@@ -47,6 +47,7 @@ public class UserController {
 
     /**
      * 跳转到用户列表页
+     * @param model
      * @return
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
@@ -68,6 +69,7 @@ public class UserController {
     /**
      * 保存用户信息
      * @param tbUser
+     * @param model
      * @param redirectAttributes
      * @return
      */
@@ -87,5 +89,18 @@ public class UserController {
             return "user_form";
         }
 
+    }
+
+    /**
+     * 搜索
+     * @param tbUser
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "search", method = RequestMethod.POST)
+    public String search(TbUser tbUser, Model model) {
+        List<TbUser> tbUsers = tbUserService.search(tbUser);
+        model.addAttribute("tbUsers", tbUsers);
+        return "user_list";
     }
 }

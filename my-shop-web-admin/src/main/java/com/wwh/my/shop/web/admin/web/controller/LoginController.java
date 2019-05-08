@@ -34,6 +34,7 @@ public class LoginController {
 
     /**
      * 跳转登录页面
+     * @param httpServletRequest
      * @return
      */
     @RequestMapping(value = {"", "login"}, method = RequestMethod.GET)
@@ -54,6 +55,10 @@ public class LoginController {
      * 登录逻辑
      * @param email
      * @param password
+     * @param isRemember
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param model
      * @return
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
