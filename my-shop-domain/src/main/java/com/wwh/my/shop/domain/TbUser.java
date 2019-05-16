@@ -1,7 +1,6 @@
 package com.wwh.my.shop.domain;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.wwh.my.shop.commons.persistence.BaseEntity;
 
 /**
  * <p>Title: TbUser</p>
@@ -11,23 +10,12 @@ import java.util.Date;
  * @version 1.0.0
  * @date 2019/4/24 16:50
  */
-public class TbUser implements Serializable {
+public class TbUser extends BaseEntity {
 
-    private Long id;
     private String username;
     private String password;
     private String phone;
     private String email;
-    private Date created;
-    private Date updated;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -59,21 +47,5 @@ public class TbUser implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
     }
 }

@@ -1,6 +1,7 @@
 package com.wwh.my.shop.web.admin.service.impl;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
+import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.utils.RegexpUtils;
 import com.wwh.my.shop.domain.TbUser;
 import com.wwh.my.shop.web.admin.dao.TbUserDao;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: TbUserServiceImpl</p>
@@ -91,6 +94,33 @@ public class TbUserServiceImpl implements TbUserService {
     @Override
     public List<TbUser> search(TbUser tbUser) {
         return tbUserDao.search(tbUser);
+    }
+
+    @Override
+    public void deleteMulti(String[] ids) {
+        tbUserDao.deleteMulti(ids);
+    }
+
+    @Override
+    public PageInfo<TbUser> page(int start, int length, int draw) {
+        PageInfo<TbUser> pageInfo = new PageInfo<>();
+        Map<String, Object> param = new HashMap<>();
+        param.put("start", start);
+        param.put("length", length);
+        int count = tbUserDao.count();
+
+        pageInfo.setDraw(draw);
+        pageInfo.setRecordsTotal(count);
+        pageInfo.setRecordsFiltered(count);
+        pageInfo.setData(tbUserDao.page(param));
+        pageInfo.setError("");
+
+        return pageInfo;
+    }
+
+    @Override
+    public int count() {
+        return tbUserDao.count();
     }
 
     /**

@@ -16,4 +16,14 @@
     <name>my-shop-domain</name>
     <description></description>
 
+    <dependencies>
+        <!-- Project Begin -->
+        <dependency>
+            <groupId>com.wwh</groupId>
+            <artifactId>my-shop-commons</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <!-- Project End -->
+    </dependencies>
+
 </project>

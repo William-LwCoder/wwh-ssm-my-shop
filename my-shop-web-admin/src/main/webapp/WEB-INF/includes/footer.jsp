@@ -37,6 +37,9 @@
 <script src="/static/assets/plugins/jquery-validation/js/localization/messages_zh.min.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="/static/assets/plugins/iCheck/icheck.min.js"></script>
+<!-- DataTables -->
+<script src="/static/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
 <!-- App -->
 <script src="/static/assets/app/validate.js"></script>
