@@ -57,6 +57,7 @@
                         <!-- /.box-header -->
                         <!-- form start -->
                         <form:form id="inputForm" cssClass="form-horizontal" action="/user/save" method="post" modelAttribute="tbUser">
+                            <form:hidden path="id" />
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">邮箱</label>

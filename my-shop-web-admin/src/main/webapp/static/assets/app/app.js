@@ -42,6 +42,7 @@ var App = function () {
 
     /**
      * 批量删除
+     * @param url
      */
     var hadnlerDeleteMulti = function (url) {
         _idArray = new Array();
@@ -113,6 +114,8 @@ var App = function () {
 
     /**
      * 初始化 Datatables
+     * @param url
+     * @param columns
      */
     var handlerInitDatatables = function (url, columns) {
         $("#dataTable").DataTable({
@@ -159,6 +162,22 @@ var App = function () {
         });
     };
 
+    /**
+     * 查看详情
+     * @param url
+     */
+    var handlerShowDetail = function (url) {
+        $.ajax({
+            url: url,
+            type: "get",
+            dataType: "html",
+            success: function (data) {
+                $("#modal-detail-body").html(data);
+                $("#modal-detail").modal("show");
+            }
+        });
+    };
+
     return {
         init: function () {
             handlerInitICheck();
@@ -175,6 +194,10 @@ var App = function () {
 
         initDatatables: function (url, columns) {
             handlerInitDatatables(url, columns)
+        },
+
+        showDetail: function (url) {
+            handlerShowDetail(url);
         }
     }
 }();
