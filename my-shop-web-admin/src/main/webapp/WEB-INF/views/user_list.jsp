@@ -54,46 +54,44 @@
                         <div class="box-header">
                             <h3 class="box-title">高级搜索</h3>
                         </div>
-                        <form:form cssClass="form-horizontal" id="searchForm" action="/user/search" method="post"
-                                   modelAttribute="tbUser">
-                            <div class="box-body">
-                                <div class="row" style="margin-top: 10px;padding-left: 12px;padding-right: 20px;">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-3">
-                                            <div class="form-group">
-                                                <label for="username" class="col-sm-4 control-label">姓名：</label>
 
-                                                <div class="col-sm-8">
-                                                    <form:input path="username" cssClass="form-control"
-                                                                placeholder="姓名"/>
-                                                </div>
+                        <div class="box-body">
+                            <div class="row form-horizontal">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="form-group">
+                                            <label for="username" class="col-sm-4 control-label">姓名：</label>
+
+                                            <div class="col-sm-8">
+                                                <input id="username" class="form-control"placeholder="姓名" />
                                             </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-3">
-                                            <div class="form-group">
-                                                <label for="phone" class="col-sm-4 control-label">手机：</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="form-group">
+                                            <label for="phone" class="col-sm-4 control-label">手机：</label>
 
-                                                <div class="col-sm-8">
-                                                    <form:input path="phone" cssClass="form-control" placeholder="手机"/>
-                                                </div>
+                                            <div class="col-sm-8">
+                                                <input id="phone" class="form-control"placeholder="手机" />
                                             </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-3">
-                                            <div class="form-group">
-                                                <label for="email" class="col-sm-4 control-label">邮箱：</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="form-group">
+                                            <label for="email" class="col-sm-4 control-label">邮箱：</label>
 
-                                                <div class="col-sm-8">
-                                                    <form:input path="email" cssClass="form-control" placeholder="邮箱"/>
-                                                </div>
+                                            <div class="col-sm-8">
+                                                <input id="email" class="form-control"placeholder="邮箱" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-info pull-right">搜索</button>
-                            </div>
-                        </form:form>
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-info pull-right" onclick="search();">搜索</button>
+                        </div>
                     </div>
 
                     <div class="box">
@@ -167,6 +165,8 @@
 <sys:modal/>
 
 <script>
+    var _dataTable;
+
     $(function () {
         var columns = [
             {
@@ -189,8 +189,18 @@
             }
         ];
 
-        App.initDatatables("/user/page", columns);
+        _dataTable = App.initDatatables("/user/page", columns);
     });
+
+    function search() {
+        var param = {
+            "username": $("#username").val(),
+            "phone": $("#phone").val(),
+            "email": $("#email").val()
+        };
+        _dataTable.settings()[0].ajax.data = param;
+        _dataTable.ajax.reload();
+    }
 </script>
 </body>
 </html>

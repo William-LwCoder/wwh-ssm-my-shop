@@ -42,15 +42,6 @@ public class TbUserServiceTest {
     }
 
     @Test
-    public void testSelectByUsername() {
-        List<TbUser> tbUsers = tbUserService.selectByUsername("uni");
-
-        for (TbUser tbUser : tbUsers) {
-            System.out.println(tbUser.getUsername());
-        }
-    }
-
-    @Test
     public void testSave() {
         // 插入
         TbUser tbUser = new TbUser();
@@ -77,10 +68,7 @@ public class TbUserServiceTest {
 
     @Test
     public void testDelete() {
-        TbUser tbUser = new TbUser();
-        tbUser.setId(38L);
-
-        tbUserService.delete(tbUser);
+        tbUserService.delete(38L);
     }
 
     @Test

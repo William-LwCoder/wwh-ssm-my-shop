@@ -36,16 +36,6 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public TbUser getById(Long id) {
-        return tbUserDao.getById(id);
-    }
-
-    @Override
-    public List<TbUser> selectByUsername(String username) {
-        return tbUserDao.selectByUsername(username);
-    }
-
-    @Override
     public BaseResult save(TbUser tbUser) {
         BaseResult baseResult = checkTbUser(tbUser);
         // 通过验证
@@ -72,8 +62,13 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public void delete(TbUser tbUser) {
-        tbUserDao.delete(tbUser);
+    public void delete(Long id) {
+        tbUserDao.delete(id);
+    }
+
+    @Override
+    public TbUser getById(Long id) {
+        return tbUserDao.getById(id);
     }
 
     @Override
@@ -92,22 +87,18 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public List<TbUser> search(TbUser tbUser) {
-        return tbUserDao.search(tbUser);
-    }
-
-    @Override
     public void deleteMulti(String[] ids) {
         tbUserDao.deleteMulti(ids);
     }
 
     @Override
-    public PageInfo<TbUser> page(int start, int length, int draw) {
+    public PageInfo<TbUser> page(int start, int length, int draw, TbUser tbUser) {
         PageInfo<TbUser> pageInfo = new PageInfo<>();
         Map<String, Object> param = new HashMap<>();
         param.put("start", start);
         param.put("length", length);
-        int count = tbUserDao.count();
+        param.put("tbUser", tbUser);
+        int count = tbUserDao.count(tbUser);
 
         pageInfo.setDraw(draw);
         pageInfo.setRecordsTotal(count);
@@ -119,8 +110,8 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
-    public int count() {
-        return tbUserDao.count();
+    public int count(TbUser tbUser) {
+        return tbUserDao.count(tbUser);
     }
 
     /**

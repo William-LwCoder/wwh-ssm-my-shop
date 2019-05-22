@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 用户管理
@@ -33,6 +32,11 @@ public class UserController {
     @Autowired
     private TbUserService tbUserService;
 
+    /**
+     * 所有 @RequestMapping 前执行，根据 ID 获取用户信息
+     * @param id
+     * @return
+     */
     @ModelAttribute
     public TbUser getTbUser(Long id) {
         TbUser tbUser = null;
@@ -93,19 +97,6 @@ public class UserController {
     }
 
     /**
-     * 搜索
-     * @param tbUser
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "search", method = RequestMethod.POST)
-    public String search(TbUser tbUser, Model model) {
-        List<TbUser> tbUsers = tbUserService.search(tbUser);
-        model.addAttribute("tbUsers", tbUsers);
-        return "user_list";
-    }
-
-    /**
      * 删除用户信息
      * @param ids
      * @return
@@ -131,11 +122,12 @@ public class UserController {
     /**
      * 分页查询
      * @param request
+     * @param tbUser
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "page", method = RequestMethod.GET)
-    public PageInfo<TbUser> page(HttpServletRequest request) {
+    public PageInfo<TbUser> page(HttpServletRequest request, TbUser tbUser) {
         String strDraw = request.getParameter("draw");
         String strStart = request.getParameter("start");
         String strLength = request.getParameter("length");
@@ -145,13 +137,13 @@ public class UserController {
         int length = strLength == null ? 0 : Integer.parseInt(strLength);
 
         // 封装 Datatables 需要的结果
-        PageInfo<TbUser> pageInfo = tbUserService.page(start, length, draw);
+        PageInfo<TbUser> pageInfo = tbUserService.page(start, length, draw, tbUser);
 
         return pageInfo;
     }
 
     /**
-     * 查看详情
+     * 显示用户详情
      * @return
      */
     @RequestMapping(value = "detail", method = RequestMethod.GET)

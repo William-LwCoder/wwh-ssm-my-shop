@@ -24,20 +24,6 @@ public interface TbUserDao {
     List<TbUser> selectAll();
 
     /**
-     * 根据 id 查询用户信息
-     * @param id
-     * @return
-     */
-    TbUser getById(Long id);
-
-    /**
-     * 根据用户名进行模糊匹配
-     * @param username
-     * @return
-     */
-    List<TbUser> selectByUsername(String username);
-
-    /**
      * 新增
      * @param tbUser
      */
@@ -45,9 +31,16 @@ public interface TbUserDao {
 
     /**
      * 删除
-     * @param tbUser
+     * @param id
      */
-    void delete(TbUser tbUser);
+    void delete(Long id);
+
+    /**
+     * 根据 id 查询用户信息
+     * @param id
+     * @return
+     */
+    TbUser getById(Long id);
 
     /**
      * 更新
@@ -61,13 +54,6 @@ public interface TbUserDao {
      * @return
      */
     TbUser getByEmail(String email);
-
-    /**
-     * 搜索
-     * @param tbUser
-     * @return
-     */
-    List<TbUser> search(TbUser tbUser);
 
     /**
      * 批量删除
@@ -84,7 +70,8 @@ public interface TbUserDao {
 
     /**
      * 查询总笔数
+     * @param tbUser
      * @return
      */
-    int count();
+    int count(TbUser tbUser);
 }

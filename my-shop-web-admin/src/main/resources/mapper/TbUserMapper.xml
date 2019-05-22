@@ -19,24 +19,6 @@
             tb_user AS u
     </select>
 
-    <select id="getById" resultType="TbUser">
-        SELECT
-            <include refid="tbUserColumns"/>
-        FROM
-            tb_user AS u
-        WHERE
-            u.id = #{id}
-    </select>
-    
-    <select id="selectByUsername" resultType="TbUser">
-        SELECT
-            <include refid="tbUserColumns"/>
-        FROM
-            tb_user AS u
-        WHERE
-            u.username LIKE CONCAT ('%', #{username}, '%')
-    </select>
-
     <insert id="insert">
         INSERT INTO tb_user (
             username,
@@ -61,6 +43,15 @@
         DELETE FROM tb_user WHERE id = #{id}
     </delete>
 
+    <select id="getById" resultType="TbUser">
+        SELECT
+            <include refid="tbUserColumns"/>
+        FROM
+            tb_user AS u
+        WHERE
+            u.id = #{id}
+    </select>
+
     <update id="update">
         UPDATE
             tb_user
@@ -83,24 +74,6 @@
             u.email = #{email}
     </select>
 
-    <select id="search" resultType="TbUser">
-        SELECT
-            <include refid="tbUserColumns"/>
-        FROM
-            tb_user AS u
-        <where>
-            <if test="username != null and username != ''">
-                AND u.username LIKE CONCAT ('%', #{username}, '%')
-            </if>
-            <if test="phone != null and phone != ''">
-                AND u.phone LIKE CONCAT ('%', #{phone}, '%')
-            </if>
-            <if test="email != null and email != ''">
-                AND u.email LIKE CONCAT ('%', #{email}, '%')
-            </if>
-        </where>
-    </select>
-
     <delete id="deleteMulti">
         DELETE FROM tb_user
         WHERE id IN
@@ -114,10 +87,32 @@
             <include refid="tbUserColumns"/>
         FROM
             tb_user AS u
+        <where>
+            <if test="tbUser.username != null and tbUser.username != ''">
+                AND u.username LIKE CONCAT ('%', #{tbUser.username}, '%')
+            </if>
+            <if test="tbUser.phone != null and tbUser.phone != ''">
+                AND u.phone LIKE CONCAT ('%', #{tbUser.phone}, '%')
+            </if>
+            <if test="tbUser.email != null and tbUser.email != ''">
+                AND u.email LIKE CONCAT ('%', #{tbUser.email}, '%')
+            </if>
+        </where>
         LIMIT #{start}, #{length}
     </select>
 
     <select id="count" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM tb_user
+        SELECT COUNT(*) FROM tb_user As u
+        <where>
+            <if test="username != null and username != ''">
+                AND u.username LIKE CONCAT ('%', #{username}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                AND u.phone LIKE CONCAT ('%', #{phone}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND u.email LIKE CONCAT ('%', #{email}, '%')
+            </if>
+        </where>
     </select>
 </mapper>
