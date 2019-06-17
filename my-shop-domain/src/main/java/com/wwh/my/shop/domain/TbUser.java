@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wwh.my.shop.commons.persistence.BaseEntity;
 
 /**
+ * 用户管理
  * <p>Title: TbUser</p>
  * <p>Description: </p>
  *
@@ -13,10 +14,10 @@ import com.wwh.my.shop.commons.persistence.BaseEntity;
  */
 public class TbUser extends BaseEntity {
 
-    private String username;
-    private String password;
-    private String phone;
-    private String email;
+    private String username;    // 用户名
+    private String password;    // 密码，加密存储
+    private String phone;       // 注册手机号
+    private String email;       // 注册邮箱
 
     public String getUsername() {
         return username;

@@ -7,6 +7,7 @@ import com.wwh.my.shop.domain.TbUser;
 import java.util.List;
 
 /**
+ * 用户管理
  * <p>Title: TbUserService</p>
  * <p>Description: </p>
  *

@@ -3,7 +3,6 @@ package com.wwh.my.shop.web.admin.web.controller;
 import com.wwh.my.shop.commons.constant.ConstantUtils;
 import com.wwh.my.shop.commons.utils.CookieUtils;
 import com.wwh.my.shop.domain.TbUser;
-import com.wwh.my.shop.domain.User;
 import com.wwh.my.shop.web.admin.service.TbUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
