@@ -1,5 +1,6 @@
 package com.wwh.my.shop.web.admin.service;
 
+import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.domain.TbContentCategory;
 
 import java.util.List;
@@ -27,4 +28,18 @@ public interface TbContentCategoryService {
      * @return
      */
     List<TbContentCategory> selectByPid(Long pid);
+
+    /**
+     * 根据 id 查询信息
+     * @param id
+     * @return
+     */
+    TbContentCategory getById(Long id);
+
+    /**
+     * 保存信息
+     * @param tbContentCategory
+     * @return
+     */
+    BaseResult save(TbContentCategory tbContentCategory);
 }

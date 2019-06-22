@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="box-body">
-                            <a href="#" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> 新增</a>
+                            <a href="/content/category/form" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> 新增</a>
                             <a href="#" class="btn btn-sm btn-default"><i class="fa fa-download"></i> 导入</a>
                             <a href="#" class="btn btn-sm btn-default"><i class="fa fa-upload"></i> 导出</a>
                         </div>

@@ -2,6 +2,11 @@ package com.wwh.my.shop.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wwh.my.shop.commons.persistence.BaseEntity;
+import com.wwh.my.shop.commons.utils.RegexpUtils;
+import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Pattern;
 
 /**
  * 用户管理
@@ -12,43 +17,19 @@ import com.wwh.my.shop.commons.persistence.BaseEntity;
  * @version 1.0.0
  * @date 2019/4/24 16:50
  */
+@Data
 public class TbUser extends BaseEntity {
 
+    @Length(min = 6, max = 20, message = "用户名长度必须介于 6 和 20 之间")
     private String username;    // 用户名
-    private String password;    // 密码，加密存储
-    private String phone;       // 注册手机号
-    private String email;       // 注册邮箱
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     @JsonIgnore
-    public String getPassword() {
-        return password;
-    }
+    @Length(min = 6, max = 20, message = "密码长度必须介于 6 和 20 之间")
+    private String password;    // 密码，加密存储
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    @Pattern(regexp = RegexpUtils.PHONE, message = "手机号格式不正确")
+    private String phone;       // 注册手机号
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @Pattern(regexp = RegexpUtils.EMAIL, message = "邮箱格式不正确")
+    private String email;       // 注册邮箱
 }

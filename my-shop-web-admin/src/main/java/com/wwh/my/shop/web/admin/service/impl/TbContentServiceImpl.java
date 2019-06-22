@@ -3,6 +3,7 @@ package com.wwh.my.shop.web.admin.service.impl;
 import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.utils.RegexpUtils;
+import com.wwh.my.shop.commons.validator.BeanValidator;
 import com.wwh.my.shop.domain.TbContent;
 import com.wwh.my.shop.web.admin.dao.TbContentDao;
 import com.wwh.my.shop.web.admin.service.TbContentService;
@@ -37,9 +38,13 @@ public class TbContentServiceImpl implements TbContentService {
 
     @Override
     public BaseResult save(TbContent tbContent) {
-        BaseResult baseResult = checkTbContent(tbContent);
-        // 通过验证
-        if (baseResult.getStatus() == BaseResult.STATUS_SUCCESS) {
+        String validator = BeanValidator.validator(tbContent);
+        // 验证不通过
+        if (validator != null) {
+            return BaseResult.fail(validator);
+        }
+        // 验证通过
+        else {
             tbContent.setUpdated(new Date());
 
             // 新增
@@ -53,10 +58,8 @@ public class TbContentServiceImpl implements TbContentService {
                 tbContentDao.update(tbContent);
             }
 
-            baseResult.setMessage("保存内容信息成功");
+            return BaseResult.success("保存内容信息成功");
         }
-
-        return baseResult;
     }
 
     @Override
@@ -95,48 +98,5 @@ public class TbContentServiceImpl implements TbContentService {
     @Override
     public int count(TbContent tbContent) {
         return tbContentDao.count(tbContent);
-    }
-
-    /**
-     * 信息的有效性验证
-     * @param tbContent
-     */
-    private BaseResult checkTbContent(TbContent tbContent) {
-        BaseResult baseResult = BaseResult.success();
-
-        // 非空验证
-        if (tbContent.getCategoryId() == null) {
-            baseResult = BaseResult.fail("内容的所属分类不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getTitle())) {
-            baseResult = BaseResult.fail("内容标题不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getSubTitle())) {
-            baseResult = BaseResult.fail("子标题不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getTitleDesc())) {
-            baseResult = BaseResult.fail("标题描述不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getUrl())) {
-            baseResult = BaseResult.fail("链接不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getPic())) {
-            baseResult = BaseResult.fail("图片绝对路径不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getPic2())) {
-            baseResult = BaseResult.fail("图片2不能为空，请重新输入");
-        }
-
-        else if (StringUtils.isBlank(tbContent.getContent())) {
-            baseResult = BaseResult.fail("内容不能为空，请重新输入");
-        }
-
-        return baseResult;
     }
 }

@@ -29,4 +29,23 @@ public interface TbContentCategoryDao {
      * @return
      */
     List<TbContentCategory> selectByPid(Long pid);
+
+    /**
+     * 根据 id 查询信息
+     * @param id
+     * @return
+     */
+    TbContentCategory getById(Long id);
+
+    /**
+     * 新增
+     * @param tbContentCategory
+     */
+    void insert(TbContentCategory tbContentCategory);
+
+    /**
+     * 更新
+     * @param tbContentCategory
+     */
+    void update(TbContentCategory tbContentCategory);
 }

@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sys" tagdir="/WEB-INF/tags/sys" %>
 
@@ -17,6 +16,8 @@
     <title>我的商城 | 内容管理</title>
     <jsp:include page="../includes/header.jsp" />
     <link rel="stylesheet" href="/static/assets/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css" />
+    <link rel="stylesheet" href="/static/assets/plugins/dropzone/min/dropzone.min.css" />
+    <link rel="stylesheet" href="/static/assets/plugins/dropzone/min/basic.min.css" />
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -69,6 +70,56 @@
                                         <input id="categoryName" class="form-control required" placeholder="请选择" readonly="true" data-toggle="modal" data-target="#modal-default" />
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="title" class="col-sm-2 control-label">标题</label>
+
+                                    <div class="col-sm-10">
+                                        <form:input cssClass="form-control required" path="title" placeholder="标题" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subTitle" class="col-sm-2 control-label">子标题</label>
+
+                                    <div class="col-sm-10">
+                                        <form:input cssClass="form-control required" path="subTitle" placeholder="子标题" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="titleDesc" class="col-sm-2 control-label">标题描述</label>
+
+                                    <div class="col-sm-10">
+                                        <form:input cssClass="form-control required" path="titleDesc" placeholder="标题描述" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="url" class="col-sm-2 control-label">链接</label>
+
+                                    <div class="col-sm-10">
+                                        <form:input cssClass="form-control required" path="url" placeholder="链接" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pic" class="col-sm-2 control-label">图片1</label>
+
+                                    <div class="col-sm-10">
+                                        <form:input cssClass="form-control required" path="pic" placeholder="图片1" />
+                                        <div id="dropz" class="dropzone"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pic2" class="col-sm-2 control-label">图片2</label>
+
+                                    <div class="col-sm-10">
+                                        <form:input cssClass="form-control required" path="pic2" placeholder="图片2" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content" class="col-sm-2 control-label">详情</label>
+
+                                    <div class="col-sm-10">
+                                        <form:textarea cssClass="form-control required" path="content" placeholder="详情" />
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- /.box-body -->
@@ -92,6 +143,7 @@
 
 <jsp:include page="../includes/footer.jsp" />
 <script src="/static/assets/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
+<script src="/static/assets/plugins/dropzone/min/dropzone.min.js"></script>
 
 <!-- 自定义模态框 -->
 <sys:modal title="请选择" message="<ul id='myTree' class='ztree'></ul>" />
@@ -104,6 +156,17 @@
             $("#categoryName").val(node.name);
             $("#modal-default").modal("hide");
         });
+    });
+
+    var myDropzone = new Dropzone("#dropz", {
+        url: "/upload",
+        dictDefaultMessage: '拖动文件至此或者点击上传', // 设置默认的提示语句
+        paramName: "dropzFile", // 传到后台的参数名称
+        init: function () {
+            this.on("success", function (file, data) {
+                // 上传成功触发的事件
+            });
+        }
     });
 </script>
 

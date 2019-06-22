@@ -17,6 +17,13 @@
     <description></description>
 
     <dependencies>
+        <!-- Spring Begin -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <!-- Spring End -->
+
         <!-- Log Begin -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -71,6 +78,21 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
         <!-- Json End -->
+
+        <!-- Lombok Begin -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!-- Lombok End -->
+
+        <!-- Hibernate-Validator Begin -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <!-- Hibernate-Validator End -->
+
     </dependencies>
 
 
