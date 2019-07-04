@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="/static/assets/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css" />
     <link rel="stylesheet" href="/static/assets/plugins/dropzone/min/dropzone.min.css" />
     <link rel="stylesheet" href="/static/assets/plugins/dropzone/min/basic.min.css" />
+    <style>
+        .dropzone {
+            border: 2px dashed #00c0ef;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -111,6 +116,7 @@
 
                                     <div class="col-sm-10">
                                         <form:input cssClass="form-control required" path="pic2" placeholder="图片2" />
+                                        <div id="dropz2" class="dropzone"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -156,18 +162,32 @@
             $("#categoryName").val(node.name);
             $("#modal-default").modal("hide");
         });
+
+
     });
 
-    var myDropzone = new Dropzone("#dropz", {
+    // 不能放在 jquery 初始化里 会冲突报错
+    App.initDropzone({
+        id: "dropz",
         url: "/upload",
-        dictDefaultMessage: '拖动文件至此或者点击上传', // 设置默认的提示语句
-        paramName: "dropzFile", // 传到后台的参数名称
         init: function () {
+            // 上传成功触发的事件
             this.on("success", function (file, data) {
-                // 上传成功触发的事件
+                $("#pic").val(data.fileName);
             });
         }
     });
+    App.initDropzone({
+        id: "dropz2",
+        url: "/upload",
+        init: function () {
+            // 上传成功触发的事件
+            this.on("success", function (file, data) {
+                $("#pic2").val(data.fileName);
+            });
+        }
+    });
+
 </script>
 
 </body>
