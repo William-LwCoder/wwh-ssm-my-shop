@@ -2,12 +2,10 @@ package com.wwh.my.shop.web.admin.service.impl;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.commons.dto.PageInfo;
-import com.wwh.my.shop.commons.utils.RegexpUtils;
 import com.wwh.my.shop.commons.validator.BeanValidator;
 import com.wwh.my.shop.domain.TbUser;
 import com.wwh.my.shop.web.admin.dao.TbUserDao;
 import com.wwh.my.shop.web.admin.service.TbUserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -30,6 +28,7 @@ public class TbUserServiceImpl implements TbUserService {
 
     @Autowired
     private TbUserDao tbUserDao;
+
 
     @Override
     public List<TbUser> selectAll() {

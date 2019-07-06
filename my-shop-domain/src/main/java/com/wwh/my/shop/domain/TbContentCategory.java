@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 public class TbContentCategory extends BaseEntity {
 
     @NotBlank
-    private Long parentId;        // 父类目ID=0时，代表的是一级的类目
+    private TbContentCategory parent;    // 父类类目对象 父类目ID=0时，代表的是一级的类目
 
     @Length(min = 1, max = 20, message = "分类名称必须介于 1 - 20 位之间")
     private String name;          // 分类名称

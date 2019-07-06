@@ -1,5 +1,6 @@
 package com.wwh.my.shop.web.admin.dao;
 
+import com.wwh.my.shop.commons.persistence.BaseDao;
 import com.wwh.my.shop.domain.TbContentCategory;
 import org.springframework.stereotype.Repository;
 
@@ -15,13 +16,7 @@ import java.util.List;
  * @date 2019/6/4 21:51
  */
 @Repository
-public interface TbContentCategoryDao {
-
-    /**
-     * 查询表全部信息
-     * @return
-     */
-    List<TbContentCategory> selectAll();
+public interface TbContentCategoryDao extends BaseDao<TbContentCategory> {
 
     /**
      * 根据父级节点 ID 查询所有子节点
@@ -29,23 +24,4 @@ public interface TbContentCategoryDao {
      * @return
      */
     List<TbContentCategory> selectByPid(Long pid);
-
-    /**
-     * 根据 id 查询信息
-     * @param id
-     * @return
-     */
-    TbContentCategory getById(Long id);
-
-    /**
-     * 新增
-     * @param tbContentCategory
-     */
-    void insert(TbContentCategory tbContentCategory);
-
-    /**
-     * 更新
-     * @param tbContentCategory
-     */
-    void update(TbContentCategory tbContentCategory);
 }

@@ -2,12 +2,10 @@ package com.wwh.my.shop.web.admin.service.impl;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.commons.dto.PageInfo;
-import com.wwh.my.shop.commons.utils.RegexpUtils;
 import com.wwh.my.shop.commons.validator.BeanValidator;
 import com.wwh.my.shop.domain.TbContent;
 import com.wwh.my.shop.web.admin.dao.TbContentDao;
 import com.wwh.my.shop.web.admin.service.TbContentService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

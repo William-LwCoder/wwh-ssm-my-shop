@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/static/assets/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css" />
     <link rel="stylesheet" href="/static/assets/plugins/dropzone/min/dropzone.min.css" />
     <link rel="stylesheet" href="/static/assets/plugins/dropzone/min/basic.min.css" />
+    <link rel="stylesheet" href="/static/assets/plugins/wangEditor/wangEditor.min.css" />
     <style>
         .dropzone {
             border: 2px dashed #00c0ef;
@@ -68,11 +69,11 @@
                             <form:hidden path="id" />
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="categoryId" class="col-sm-2 control-label">父级类目</label>
+                                    <label class="col-sm-2 control-label">所属分类</label>
 
                                     <div class="col-sm-10">
-                                        <form:hidden path="categoryId" />
-                                        <input id="categoryName" class="form-control required" placeholder="请选择" readonly="true" data-toggle="modal" data-target="#modal-default" />
+                                        <form:hidden id="categoryId" path="tbContentCategory.id" />
+                                        <input id="categoryName" class="form-control required" placeholder="请选择" readonly="true" data-toggle="modal" data-target="#modal-default" value="${tbContent.tbContentCategory.name}" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -120,10 +121,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="content" class="col-sm-2 control-label">详情</label>
+                                    <label class="col-sm-2 control-label">详情</label>
 
                                     <div class="col-sm-10">
-                                        <form:textarea cssClass="form-control required" path="content" placeholder="详情" />
+                                        <form:hidden path="content" />
+                                        <%--<form:textarea cssClass="form-control required" path="content" placeholder="详情" />--%>
+                                        <div id="editor">${tbContent.content}</div>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +134,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="button" class="btn btn-default" onclick="history.go(-1);">返回</button>
-                                <button type="submit" class="btn btn-info pull-right">提交</button>
+                                <button id="btnSubmit" type="submit" class="btn btn-info pull-right">提交</button>
                             </div>
                             <!-- /.box-footer -->
                         </form:form>
@@ -150,6 +153,7 @@
 <jsp:include page="../includes/footer.jsp" />
 <script src="/static/assets/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script src="/static/assets/plugins/dropzone/min/dropzone.min.js"></script>
+<script src="/static/assets/plugins/wangEditor/wangEditor.min.js"></script>
 
 <!-- 自定义模态框 -->
 <sys:modal title="请选择" message="<ul id='myTree' class='ztree'></ul>" />
@@ -163,8 +167,25 @@
             $("#modal-default").modal("hide");
         });
 
-
+        initWangEditor();
     });
+
+    /**
+     * 初始化富文本编辑器 wangEditor
+     */
+    function initWangEditor() {
+        var E = window.wangEditor;
+        var editor = new E('#editor');
+        // 配置服务器端地址
+        editor.customConfig.uploadImgServer = '/upload';
+        editor.customConfig.uploadFileName = 'editorFile';
+        editor.create();
+
+        $("#btnSubmit").bind("click", function(){
+            var contentHtml = editor.txt.html();
+            $("#content").val(contentHtml);
+        });
+    }
 
     // 不能放在 jquery 初始化里 会冲突报错
     App.initDropzone({

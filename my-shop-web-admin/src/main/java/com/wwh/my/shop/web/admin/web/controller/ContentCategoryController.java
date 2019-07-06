@@ -124,7 +124,7 @@ public class ContentCategoryController {
      */
     private void sortList(List<TbContentCategory> sourceList, List<TbContentCategory> targetList, Long parentId) {
         for (TbContentCategory tbContentCategory : sourceList) {
-            if (tbContentCategory.getParentId().equals(parentId)) {
+            if (tbContentCategory.getParent().getId().equals(parentId)) {
                 targetList.add(tbContentCategory);
 
                 // 判断有没有子节点，如果有则继续追加

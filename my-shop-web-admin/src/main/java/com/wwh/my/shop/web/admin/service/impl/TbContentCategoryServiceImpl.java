@@ -1,6 +1,7 @@
 package com.wwh.my.shop.web.admin.service.impl;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
+import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.validator.BeanValidator;
 import com.wwh.my.shop.domain.TbContentCategory;
 import com.wwh.my.shop.web.admin.dao.TbContentCategoryDao;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: TbContentCategoryServiceImpl</p>
@@ -25,10 +28,6 @@ public class TbContentCategoryServiceImpl implements TbContentCategoryService {
     @Autowired
     private TbContentCategoryDao tbContentCategoryDao;
 
-    @Override
-    public List<TbContentCategory> selectAll() {
-        return tbContentCategoryDao.selectAll();
-    }
 
     @Override
     public List<TbContentCategory> selectByPid(Long pid) {
@@ -36,8 +35,8 @@ public class TbContentCategoryServiceImpl implements TbContentCategoryService {
     }
 
     @Override
-    public TbContentCategory getById(Long id) {
-        return tbContentCategoryDao.getById(id);
+    public List<TbContentCategory> selectAll() {
+        return tbContentCategoryDao.selectAll();
     }
 
     @Override
@@ -64,5 +63,43 @@ public class TbContentCategoryServiceImpl implements TbContentCategoryService {
 
             return BaseResult.success("保存内容分类信息成功");
         }
+    }
+
+    @Override
+    public void delete(Long id) {
+        tbContentCategoryDao.delete(id);
+    }
+
+    @Override
+    public TbContentCategory getById(Long id) {
+        return tbContentCategoryDao.getById(id);
+    }
+
+    @Override
+    public void deleteMulti(String[] ids) {
+        tbContentCategoryDao.deleteMulti(ids);
+    }
+
+    @Override
+    public PageInfo<TbContentCategory> page(int start, int length, int draw, TbContentCategory tbContentCategory) {
+        PageInfo<TbContentCategory> pageInfo = new PageInfo<>();
+        Map<String, Object> param = new HashMap<>();
+        param.put("start", start);
+        param.put("length", length);
+        param.put("tbContentCategory", tbContentCategory);
+        int count = tbContentCategoryDao.count(tbContentCategory);
+
+        pageInfo.setDraw(draw);
+        pageInfo.setRecordsTotal(count);
+        pageInfo.setRecordsFiltered(count);
+        pageInfo.setData(tbContentCategoryDao.page(param));
+        pageInfo.setError("");
+
+        return pageInfo;
+    }
+
+    @Override
+    public int count(TbContentCategory tbContentCategory) {
+        return tbContentCategoryDao.count(tbContentCategory);
     }
 }

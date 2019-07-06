@@ -4,13 +4,18 @@
 
     <sql id="tbContentCategoryColumns">
         cc.id,
-        cc.parent_id AS parentId,
         cc.name,
         cc.status,
         cc.sort_order AS sortOrder,
         cc.is_parent AS isParent,
         cc.created,
-        cc.updated
+        cc.updated,
+        IFNULL (cc2.id, '0') AS "parent.id",
+        IFNULL (cc2.name, '/') AS "parent.name"
+    </sql>
+
+    <sql id="tbContentCategoryJoins">
+        LEFT JOIN tb_content_category AS cc2 ON cc.parent_id = cc2.id
     </sql>
 
     <select id="selectAll" resultType="TbContentCategory">
@@ -18,6 +23,7 @@
             <include refid="tbContentCategoryColumns"/>
         FROM
             tb_content_category AS cc
+            <include refid="tbContentCategoryJoins"/>
         ORDER BY
             cc.parent_id ASC,
             cc.sort_order ASC,
@@ -29,8 +35,9 @@
             <include refid="tbContentCategoryColumns"/>
         FROM
             tb_content_category AS cc
+            <include refid="tbContentCategoryJoins"/>
         WHERE
-            cc.parent_id = #{parentId}
+            cc.parent_id = #{parent.id}
     </select>
 
     <select id="getById" resultType="TbContentCategory">
@@ -38,6 +45,7 @@
             <include refid="tbContentCategoryColumns"/>
         FROM
             tb_content_category AS cc
+            <include refid="tbContentCategoryJoins"/>
         WHERE
             cc.id = #{id}
     </select>
@@ -54,7 +62,7 @@
         )
         VALUES
           (
-            #{parentId},
+            #{parent.id},
             #{name},
             #{status},
             #{sortOrder},
@@ -68,7 +76,7 @@
         UPDATE
             tb_content_category
         SET
-            parent_id = #{parentId},
+            parent_id = #{parent.id},
             name = #{name},
             status = #{status},
             sort_order = #{sortOrder},

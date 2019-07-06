@@ -29,17 +29,20 @@ public class UploadController {
 
     /**
      * 文件上传
-     * @param dropzFile
+     * @param dropzFile Dropzone 上传文件
+     * @param editorFile wangEditor 上传文件
      * @param request
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "upload", method = RequestMethod.POST)
-    public Map<String, Object> upload(MultipartFile dropzFile, HttpServletRequest request) {
+    public Map<String, Object> upload(MultipartFile dropzFile, MultipartFile editorFile, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
 
+        MultipartFile myFile = dropzFile == null ? editorFile : dropzFile;
+
         // 获取上传的原始文件名
-        String fileName = dropzFile.getOriginalFilename();
+        String fileName = myFile.getOriginalFilename();
         // 设置文件上传路径
         String filePath = request.getSession().getServletContext().getRealPath(UPLOAD_PATH);
         // 获取文件后缀
@@ -55,13 +58,31 @@ public class UploadController {
 
         try {
             // 写入文件
-            dropzFile.transferTo(file);
+            myFile.transferTo(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // 返回 JSON 数据，这里只带入了文件名
-        result.put("fileName", UPLOAD_PATH + file.getName());
+        // Dropzone 图片返回格式
+        if (dropzFile != null) {
+            // 返回 JSON 数据，这里只带入了文件名
+            result.put("fileName", UPLOAD_PATH + file.getName());
+        }
+        // wangEditor 图片返回格式
+        else {
+            /**
+             * 获取服务端路径
+             * scheme: 服务器提供的协议 http/https
+             * serverName: 服务器名称 localhost/ip/domain
+             * serverPort: 服务器端口
+             * contextPath: 项目地址
+             */
+            String serverPath = String.format("%s://%s:%s%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath(), UPLOAD_PATH);
+
+            // 返回给 wangEditor 的数据格式
+            result.put("errno", 0);
+            result.put("data", new String[]{serverPath + file.getName()});
+        }
 
         return result;
     }
