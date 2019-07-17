@@ -65,7 +65,7 @@
 
                                     <div class="col-sm-10">
                                         <form:hidden id="parentId" path="parent.id" />
-                                        <input id="parentName" class="form-control required" placeholder="请选择" readonly="true" data-toggle="modal" data-target="#modal-default" value="${tbContentCategory.parent.name}" />
+                                        <input id="parentName" class="form-control" placeholder="请选择" readonly="true" data-toggle="modal" data-target="#modal-default" value="${tbContentCategory.parent.name}" />
                                     </div>
                                 </div>
                                 <div class="form-group">

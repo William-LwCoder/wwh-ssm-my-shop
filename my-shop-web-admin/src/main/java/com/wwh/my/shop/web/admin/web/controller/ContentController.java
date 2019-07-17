@@ -3,9 +3,9 @@ package com.wwh.my.shop.web.admin.web.controller;
 import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.domain.TbContent;
+import com.wwh.my.shop.web.admin.abstracts.AbstractBaseController;
 import com.wwh.my.shop.web.admin.service.TbContentService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 内容管理
+ *
  * <p>Title: ContentController</p>
  * <p>Description: </p>
  *
@@ -27,13 +28,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping(value = "content")
-public class ContentController {
-
-    @Autowired
-    private TbContentService tbContentService;
+public class ContentController extends AbstractBaseController<TbContent, TbContentService> {
 
     /**
      * 所有 @RequestMapping 前执行，根据 ID 获取信息
+     *
      * @param id
      * @return
      */
@@ -43,7 +42,7 @@ public class ContentController {
 
         // id 不为空，则从数据库获取
         if (id != null) {
-            tbContent = tbContentService.getById(id);
+            tbContent = service.getById(id);
         }
 
         else {
@@ -55,32 +54,38 @@ public class ContentController {
 
     /**
      * 跳转到列表页
+     *
      * @return
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
+    @Override
     public String list() {
         return "content_list";
     }
 
     /**
      * 跳转表单页
+     *
      * @return
      */
     @RequestMapping(value = "form", method = RequestMethod.GET)
+    @Override
     public String form() {
         return "content_form";
     }
 
     /**
      * 保存信息
+     *
      * @param tbContent
      * @param model
      * @param redirectAttributes
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
+    @Override
     public String save(TbContent tbContent, Model model, RedirectAttributes redirectAttributes) {
-        BaseResult baseResult = tbContentService.save(tbContent);
+        BaseResult baseResult = service.save(tbContent);
 
         // 保存成功
         if (baseResult.getStatus() == BaseResult.STATUS_SUCCESS) {
@@ -98,17 +103,19 @@ public class ContentController {
 
     /**
      * 删除信息
+     *
      * @param ids
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @Override
     public BaseResult delete(String ids) {
         BaseResult baseResult = null;
         // 删除成功
         if (StringUtils.isNotBlank(ids)) {
             String[] idArray = ids.split(",");
-            tbContentService.deleteMulti(idArray);
+            service.deleteMulti(idArray);
             baseResult = BaseResult.success("删除成功");
         }
         // 删除失败
@@ -121,12 +128,14 @@ public class ContentController {
 
     /**
      * 分页查询
+     *
      * @param request
      * @param tbContent
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "page", method = RequestMethod.GET)
+    @Override
     public PageInfo<TbContent> page(HttpServletRequest request, TbContent tbContent) {
         String strDraw = request.getParameter("draw");
         String strStart = request.getParameter("start");
@@ -137,16 +146,18 @@ public class ContentController {
         int length = strLength == null ? 0 : Integer.parseInt(strLength);
 
         // 封装 Datatables 需要的结果
-        PageInfo<TbContent> pageInfo = tbContentService.page(start, length, draw, tbContent);
+        PageInfo<TbContent> pageInfo = service.page(start, length, draw, tbContent);
 
         return pageInfo;
     }
 
     /**
      * 显示详情
+     *
      * @return
      */
     @RequestMapping(value = "detail", method = RequestMethod.GET)
+    @Override
     public String detail() {
         return "content_detail";
     }

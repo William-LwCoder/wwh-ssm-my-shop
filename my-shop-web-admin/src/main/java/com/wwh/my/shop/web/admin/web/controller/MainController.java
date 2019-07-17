@@ -17,6 +17,7 @@ public class MainController {
 
     /**
      * 跳转到首页
+     *
      * @return
      */
     @RequestMapping(value = "main", method = RequestMethod.GET)

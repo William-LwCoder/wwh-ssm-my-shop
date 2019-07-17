@@ -1,21 +1,20 @@
 package com.wwh.my.shop.commons.persistence;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
-import com.wwh.my.shop.commons.dto.PageInfo;
 
 import java.util.List;
 
 /**
- * 所有业务逻辑层的基类
+ * 通用的树形机构接口
  *
- * <p>Title: BaseService</p>
+ * <p>Title: BaseTreeService</p>
  * <p>Description: </p>
  *
  * @author William
  * @version 1.0.0
- * @date 2019/7/6 12:52
+ * @date 2019/7/7 22:25
  */
-public interface BaseService<T extends BaseEntity> {
+public interface BaseTreeService<T extends BaseTreeEntity> {
 
     /**
      * 查询表全部信息
@@ -44,25 +43,9 @@ public interface BaseService<T extends BaseEntity> {
     T getById(Long id);
 
     /**
-     * 批量删除
-     * @param ids
-     */
-    void deleteMulti(String[] ids);
-
-    /**
-     * 分页查询
-     * @param start
-     * @param length
-     * @param draw
-     * @param entity
+     * 根据父级节点 ID 查询所有子节点
+     * @param pid
      * @return
      */
-    PageInfo<T> page(int start, int length, int draw, T entity);
-
-    /**
-     * 查询总笔数
-     * @param entity
-     * @return
-     */
-    int count(T entity);
+    List<T> selectByPid(Long pid);
 }

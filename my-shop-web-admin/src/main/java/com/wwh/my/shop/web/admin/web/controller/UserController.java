@@ -3,9 +3,9 @@ package com.wwh.my.shop.web.admin.web.controller;
 import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.domain.TbUser;
+import com.wwh.my.shop.web.admin.abstracts.AbstractBaseController;
 import com.wwh.my.shop.web.admin.service.TbUserService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户管理
+ *
  * <p>Title: UserController</p>
  * <p>Description: </p>
  *
@@ -27,13 +28,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping(value = "user")
-public class UserController {
-
-    @Autowired
-    private TbUserService tbUserService;
+public class UserController extends AbstractBaseController<TbUser, TbUserService> {
 
     /**
      * 所有 @RequestMapping 前执行，根据 ID 获取用户信息
+     *
      * @param id
      * @return
      */
@@ -43,7 +42,7 @@ public class UserController {
 
         // id 不为空，则从数据库获取
         if (id != null) {
-            tbUser = tbUserService.getById(id);
+            tbUser = service.getById(id);
         }
 
         else {
@@ -55,32 +54,38 @@ public class UserController {
 
     /**
      * 跳转到用户列表页
+     *
      * @return
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
+    @Override
     public String list() {
         return "user_list";
     }
 
     /**
      * 跳转用户表单页
+     *
      * @return
      */
     @RequestMapping(value = "form", method = RequestMethod.GET)
+    @Override
     public String form() {
         return "user_form";
     }
 
     /**
      * 保存用户信息
+     *
      * @param tbUser
      * @param model
      * @param redirectAttributes
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
+    @Override
     public String save(TbUser tbUser, Model model, RedirectAttributes redirectAttributes) {
-        BaseResult baseResult = tbUserService.save(tbUser);
+        BaseResult baseResult = service.save(tbUser);
 
         // 保存成功
         if (baseResult.getStatus() == BaseResult.STATUS_SUCCESS) {
@@ -98,17 +103,19 @@ public class UserController {
 
     /**
      * 删除用户信息
+     *
      * @param ids
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @Override
     public BaseResult delete(String ids) {
         BaseResult baseResult = null;
         // 删除用户成功
         if (StringUtils.isNotBlank(ids)) {
             String[] idArray = ids.split(",");
-            tbUserService.deleteMulti(idArray);
+            service.deleteMulti(idArray);
             baseResult = BaseResult.success("删除用户成功");
         }
         // 删除用户失败
@@ -121,12 +128,14 @@ public class UserController {
 
     /**
      * 分页查询
+     *
      * @param request
      * @param tbUser
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "page", method = RequestMethod.GET)
+    @Override
     public PageInfo<TbUser> page(HttpServletRequest request, TbUser tbUser) {
         String strDraw = request.getParameter("draw");
         String strStart = request.getParameter("start");
@@ -137,16 +146,18 @@ public class UserController {
         int length = strLength == null ? 0 : Integer.parseInt(strLength);
 
         // 封装 Datatables 需要的结果
-        PageInfo<TbUser> pageInfo = tbUserService.page(start, length, draw, tbUser);
+        PageInfo<TbUser> pageInfo = service.page(start, length, draw, tbUser);
 
         return pageInfo;
     }
 
     /**
      * 显示用户详情
+     *
      * @return
      */
     @RequestMapping(value = "detail", method = RequestMethod.GET)
+    @Override
     public String detail() {
         return "user_detail";
     }

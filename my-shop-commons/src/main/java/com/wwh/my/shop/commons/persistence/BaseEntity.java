@@ -1,10 +1,13 @@
 package com.wwh.my.shop.commons.persistence;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 实体类的基类
+ *
  * <p>Title: BaseEntity</p>
  * <p>Description: </p>
  *
@@ -14,9 +17,9 @@ import java.util.Date;
  */
 public abstract class BaseEntity implements Serializable {
 
-    private Long id;
-    private Date created;
-    private Date updated;
+    private Long id;    // 表主键 ID
+    private Date created;   // 创建时间
+    private Date updated;   // 更新时间
 
     public Long getId() {
         return id;

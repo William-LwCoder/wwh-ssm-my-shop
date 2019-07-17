@@ -1,14 +1,11 @@
 package com.wwh.my.shop.web.admin.service;
 
-import com.wwh.my.shop.commons.dto.BaseResult;
-import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.persistence.BaseService;
 import com.wwh.my.shop.domain.TbContent;
 
-import java.util.List;
-
 /**
  * 内容管理
+ *
  * <p>Title: TbContentService</p>
  * <p>Description: </p>
  *

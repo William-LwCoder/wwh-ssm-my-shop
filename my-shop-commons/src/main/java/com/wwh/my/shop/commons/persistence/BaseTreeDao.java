@@ -1,19 +1,18 @@
 package com.wwh.my.shop.commons.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 所有数据访问层的基类
+ * 通用的树形机构接口
  *
- * <p>Title: BaseDao</p>
+ * <p>Title: BaseTreeDao</p>
  * <p>Description: </p>
  *
  * @author William
  * @version 1.0.0
- * @date 2019/7/6 12:46
+ * @date 2019/7/7 22:19
  */
-public interface BaseDao<T extends BaseEntity> {
+public interface BaseTreeDao<T extends BaseTreeEntity> {
 
     /**
      * 查询表全部信息
@@ -47,22 +46,9 @@ public interface BaseDao<T extends BaseEntity> {
     void update(T entity);
 
     /**
-     * 批量删除
-     * @param ids
-     */
-    void deleteMulti(String[] ids);
-
-    /**
-     * 分页查询
-     * @param param 需要两个参数 start/记录开始的位置 length/每页记录数
+     * 根据父级节点 ID 查询所有子节点
+     * @param pid
      * @return
      */
-    List<T> page(Map<String, Object> param);
-
-    /**
-     * 查询总笔数
-     * @param entity
-     * @return
-     */
-    int count(T entity);
+    List<T> selectByPid(Long pid);
 }

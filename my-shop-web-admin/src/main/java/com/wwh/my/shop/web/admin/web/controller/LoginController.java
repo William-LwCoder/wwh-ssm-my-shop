@@ -33,6 +33,7 @@ public class LoginController {
 
     /**
      * 跳转登录页面
+     *
      * @param httpServletRequest
      * @return
      */
@@ -52,6 +53,7 @@ public class LoginController {
 
     /**
      * 登录逻辑
+     *
      * @param email
      * @param password
      * @param isRemember
@@ -94,6 +96,7 @@ public class LoginController {
 
     /**
      * 注销
+     *
      * @param httpServletRequest
      * @return
      */

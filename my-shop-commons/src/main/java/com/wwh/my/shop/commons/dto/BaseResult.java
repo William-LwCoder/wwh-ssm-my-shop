@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 自定义返回结果
+ *
  * <p>Title: BaseResult</p>
  * <p>Description: </p>
  *

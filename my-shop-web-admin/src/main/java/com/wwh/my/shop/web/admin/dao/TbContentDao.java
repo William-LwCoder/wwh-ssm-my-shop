@@ -4,11 +4,9 @@ import com.wwh.my.shop.commons.persistence.BaseDao;
 import com.wwh.my.shop.domain.TbContent;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * 内容管理
+ *
  * <p>Title: TbContentDao</p>
  * <p>Description: </p>
  *

@@ -1,18 +1,14 @@
 package com.wwh.my.shop.web.admin.service.impl;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
-import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.validator.BeanValidator;
 import com.wwh.my.shop.domain.TbContent;
+import com.wwh.my.shop.web.admin.abstracts.AbstractBaseServiceImpl;
 import com.wwh.my.shop.web.admin.dao.TbContentDao;
 import com.wwh.my.shop.web.admin.service.TbContentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>Title: TbContentServiceImpl</p>
@@ -23,16 +19,7 @@ import java.util.Map;
  * @date 2019/6/14 23:47
  */
 @Service
-public class TbContentServiceImpl implements TbContentService {
-
-    @Autowired
-    private TbContentDao tbContentDao;
-
-
-    @Override
-    public List<TbContent> selectAll() {
-        return tbContentDao.selectAll();
-    }
+public class TbContentServiceImpl extends AbstractBaseServiceImpl<TbContent, TbContentDao> implements TbContentService {
 
     @Override
     public BaseResult save(TbContent tbContent) {
@@ -48,53 +35,15 @@ public class TbContentServiceImpl implements TbContentService {
             // 新增
             if (tbContent.getId() == null) {
                 tbContent.setCreated(new Date());
-                tbContentDao.insert(tbContent);
+                dao.insert(tbContent);
             }
 
             // 编辑
             else {
-                tbContentDao.update(tbContent);
+                dao.update(tbContent);
             }
 
             return BaseResult.success("保存内容信息成功");
         }
-    }
-
-    @Override
-    public void delete(Long id) {
-        tbContentDao.delete(id);
-    }
-
-    @Override
-    public TbContent getById(Long id) {
-        return tbContentDao.getById(id);
-    }
-
-    @Override
-    public void deleteMulti(String[] ids) {
-        tbContentDao.deleteMulti(ids);
-    }
-
-    @Override
-    public PageInfo<TbContent> page(int start, int length, int draw, TbContent tbContent) {
-        PageInfo<TbContent> pageInfo = new PageInfo<>();
-        Map<String, Object> param = new HashMap<>();
-        param.put("start", start);
-        param.put("length", length);
-        param.put("tbContent", tbContent);
-        int count = tbContentDao.count(tbContent);
-
-        pageInfo.setDraw(draw);
-        pageInfo.setRecordsTotal(count);
-        pageInfo.setRecordsFiltered(count);
-        pageInfo.setData(tbContentDao.page(param));
-        pageInfo.setError("");
-
-        return pageInfo;
-    }
-
-    @Override
-    public int count(TbContent tbContent) {
-        return tbContentDao.count(tbContent);
     }
 }

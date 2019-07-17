@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * 分页数据传输对象
+ *
  * <p>Title: PageInfo</p>
  * <p>Description: </p>
  *
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2019/5/16 20:13
  */
 public class PageInfo<T extends BaseEntity> implements Serializable {
+
     private int draw;
     private int recordsTotal;
     private int recordsFiltered;

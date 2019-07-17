@@ -1,14 +1,11 @@
 package com.wwh.my.shop.web.admin.service;
 
-import com.wwh.my.shop.commons.dto.BaseResult;
-import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.persistence.BaseService;
 import com.wwh.my.shop.domain.TbUser;
 
-import java.util.List;
-
 /**
  * 用户管理
+ *
  * <p>Title: TbUserService</p>
  * <p>Description: </p>
  *
@@ -20,6 +17,7 @@ public interface TbUserService extends BaseService<TbUser> {
 
     /**
      * 用户登录
+     *
      * @param email
      * @param password
      * @return

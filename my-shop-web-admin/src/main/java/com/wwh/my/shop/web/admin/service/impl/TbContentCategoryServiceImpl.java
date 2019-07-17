@@ -1,18 +1,14 @@
 package com.wwh.my.shop.web.admin.service.impl;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
-import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.commons.validator.BeanValidator;
 import com.wwh.my.shop.domain.TbContentCategory;
+import com.wwh.my.shop.web.admin.abstracts.AbstractBaseTreeServiceImpl;
 import com.wwh.my.shop.web.admin.dao.TbContentCategoryDao;
 import com.wwh.my.shop.web.admin.service.TbContentCategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>Title: TbContentCategoryServiceImpl</p>
@@ -23,21 +19,7 @@ import java.util.Map;
  * @date 2019/6/4 21:53
  */
 @Service
-public class TbContentCategoryServiceImpl implements TbContentCategoryService {
-
-    @Autowired
-    private TbContentCategoryDao tbContentCategoryDao;
-
-
-    @Override
-    public List<TbContentCategory> selectByPid(Long pid) {
-        return tbContentCategoryDao.selectByPid(pid);
-    }
-
-    @Override
-    public List<TbContentCategory> selectAll() {
-        return tbContentCategoryDao.selectAll();
-    }
+public class TbContentCategoryServiceImpl extends AbstractBaseTreeServiceImpl<TbContentCategory, TbContentCategoryDao> implements TbContentCategoryService {
 
     @Override
     public BaseResult save(TbContentCategory tbContentCategory) {
@@ -48,58 +30,45 @@ public class TbContentCategoryServiceImpl implements TbContentCategoryService {
         }
         // 验证通过
         else {
+            TbContentCategory parent = tbContentCategory.getParent();
+            // 如果没有选择父级节点则默认设置为根目录
+            if (parent == null || parent.getId() == null) {
+                // 0 代表根目录
+                parent.setId(0L);
+            }
+
+
             tbContentCategory.setUpdated(new Date());
 
             // 新增
             if (tbContentCategory.getId() == null) {
                 tbContentCategory.setCreated(new Date());
-                tbContentCategoryDao.insert(tbContentCategory);
+                tbContentCategory.setIsParent(false);
+
+                // 判断当前新增的节点有没有父节点
+                if (parent.getId() != 0L) {
+                    TbContentCategory currentCategoryParent = dao.getById(parent.getId());
+                    if (currentCategoryParent != null) {
+                        // 为父级节点设置 isParent 为 true
+                        currentCategoryParent.setIsParent(true);
+                        dao.update(currentCategoryParent);
+                    }
+                }
+                // 父级节点为 0 ，表示为根目录
+                else {
+                    // 根目录一定是父级目录
+                    tbContentCategory.setIsParent(true);
+                }
+
+                dao.insert(tbContentCategory);
             }
 
             // 编辑
             else {
-                tbContentCategoryDao.update(tbContentCategory);
+                dao.update(tbContentCategory);
             }
 
             return BaseResult.success("保存内容分类信息成功");
         }
-    }
-
-    @Override
-    public void delete(Long id) {
-        tbContentCategoryDao.delete(id);
-    }
-
-    @Override
-    public TbContentCategory getById(Long id) {
-        return tbContentCategoryDao.getById(id);
-    }
-
-    @Override
-    public void deleteMulti(String[] ids) {
-        tbContentCategoryDao.deleteMulti(ids);
-    }
-
-    @Override
-    public PageInfo<TbContentCategory> page(int start, int length, int draw, TbContentCategory tbContentCategory) {
-        PageInfo<TbContentCategory> pageInfo = new PageInfo<>();
-        Map<String, Object> param = new HashMap<>();
-        param.put("start", start);
-        param.put("length", length);
-        param.put("tbContentCategory", tbContentCategory);
-        int count = tbContentCategoryDao.count(tbContentCategory);
-
-        pageInfo.setDraw(draw);
-        pageInfo.setRecordsTotal(count);
-        pageInfo.setRecordsFiltered(count);
-        pageInfo.setData(tbContentCategoryDao.page(param));
-        pageInfo.setError("");
-
-        return pageInfo;
-    }
-
-    @Override
-    public int count(TbContentCategory tbContentCategory) {
-        return tbContentCategoryDao.count(tbContentCategory);
     }
 }

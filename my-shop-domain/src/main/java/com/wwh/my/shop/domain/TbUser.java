@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 用户管理
+ *
  * <p>Title: TbUser</p>
  * <p>Description: </p>
  *
