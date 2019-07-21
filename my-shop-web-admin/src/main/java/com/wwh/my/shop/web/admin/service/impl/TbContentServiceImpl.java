@@ -7,6 +7,7 @@ import com.wwh.my.shop.web.admin.abstracts.AbstractBaseServiceImpl;
 import com.wwh.my.shop.web.admin.dao.TbContentDao;
 import com.wwh.my.shop.web.admin.service.TbContentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -19,8 +20,10 @@ import java.util.Date;
  * @date 2019/6/14 23:47
  */
 @Service
+@Transactional(readOnly = true)
 public class TbContentServiceImpl extends AbstractBaseServiceImpl<TbContent, TbContentDao> implements TbContentService {
 
+    @Transactional(readOnly = false)
     @Override
     public BaseResult save(TbContent tbContent) {
         String validator = BeanValidator.validator(tbContent);

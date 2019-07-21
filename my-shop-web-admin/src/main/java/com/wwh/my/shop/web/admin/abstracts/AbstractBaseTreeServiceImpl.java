@@ -4,6 +4,7 @@ import com.wwh.my.shop.commons.persistence.BaseTreeDao;
 import com.wwh.my.shop.commons.persistence.BaseTreeEntity;
 import com.wwh.my.shop.commons.persistence.BaseTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public abstract class AbstractBaseTreeServiceImpl<T extends BaseTreeEntity, D ex
      *
      * @param id
      */
+    @Transactional(readOnly = false)
     @Override
     public void delete(Long id) {
         dao.delete(id);

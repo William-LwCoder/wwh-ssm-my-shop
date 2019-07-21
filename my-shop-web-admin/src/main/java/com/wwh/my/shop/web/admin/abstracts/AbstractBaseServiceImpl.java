@@ -5,6 +5,7 @@ import com.wwh.my.shop.commons.persistence.BaseDao;
 import com.wwh.my.shop.commons.persistence.BaseEntity;
 import com.wwh.my.shop.commons.persistence.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ public abstract class AbstractBaseServiceImpl<T extends BaseEntity, D extends Ba
      *
      * @param id
      */
+    @Transactional(readOnly = false)
     @Override
     public void delete(Long id) {
         dao.delete(id);
@@ -59,6 +61,7 @@ public abstract class AbstractBaseServiceImpl<T extends BaseEntity, D extends Ba
      *
      * @param ids
      */
+    @Transactional(readOnly = false)
     @Override
     public void deleteMulti(String[] ids) {
         dao.deleteMulti(ids);

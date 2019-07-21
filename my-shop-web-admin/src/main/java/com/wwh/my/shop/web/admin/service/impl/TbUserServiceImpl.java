@@ -7,6 +7,7 @@ import com.wwh.my.shop.web.admin.abstracts.AbstractBaseServiceImpl;
 import com.wwh.my.shop.web.admin.dao.TbUserDao;
 import com.wwh.my.shop.web.admin.service.TbUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
@@ -20,8 +21,10 @@ import java.util.Date;
  * @date 2019/4/24 17:02
  */
 @Service
+@Transactional(readOnly = true)
 public class TbUserServiceImpl extends AbstractBaseServiceImpl<TbUser, TbUserDao> implements TbUserService {
 
+    @Transactional(readOnly = false)
     @Override
     public BaseResult save(TbUser tbUser) {
         String validator = BeanValidator.validator(tbUser);
