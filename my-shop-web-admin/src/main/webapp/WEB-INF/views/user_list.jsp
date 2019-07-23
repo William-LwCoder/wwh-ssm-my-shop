@@ -62,7 +62,7 @@
                                             <label for="username" class="col-sm-4 control-label">姓名：</label>
 
                                             <div class="col-sm-8">
-                                                <input id="username" class="form-control" placeholder="姓名" />
+                                                <input id="username" class="form-control" placeholder="姓名"/>
                                             </div>
                                         </div>
                                     </div>
@@ -71,7 +71,7 @@
                                             <label for="phone" class="col-sm-4 control-label">手机：</label>
 
                                             <div class="col-sm-8">
-                                                <input id="phone" class="form-control" placeholder="手机" />
+                                                <input id="phone" class="form-control" placeholder="手机"/>
                                             </div>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                             <label for="email" class="col-sm-4 control-label">邮箱：</label>
 
                                             <div class="col-sm-8">
-                                                <input id="email" class="form-control" placeholder="邮箱" />
+                                                <input id="email" class="form-control" placeholder="邮箱"/>
                                             </div>
                                         </div>
                                     </div>
@@ -185,9 +185,10 @@
             {
                 "data": function (row, type, val, meta) {
                     var detailUrl = "/user/detail?id=" + row.id;
+                    var deleteUrl = "/user/delete";
                     return '<button type="button" class="btn btn-sm btn-default" onclick="App.showDetail(\'' + detailUrl + '\');"><i class="fa fa-search"></i> 查看</button>&nbsp;&nbsp;&nbsp;' +
                         '<a href="/user/form?id=' + row.id + '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> 编辑</a>&nbsp;&nbsp;&nbsp;' +
-                        '<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i> 删除</a>';
+                        '<button type="button" class="btn btn-sm btn-danger" onclick="App.deleteSingle(\'' + deleteUrl + '\', \'' + row.id + '\')"><i class="fa fa-trash-o"></i> 删除</button>';
                 }
             }
         ];

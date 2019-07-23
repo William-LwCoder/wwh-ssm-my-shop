@@ -1,5 +1,6 @@
 package com.wwh.my.shop.web.admin.abstracts;
 
+import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.commons.persistence.BaseTreeEntity;
 import com.wwh.my.shop.commons.persistence.BaseTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,6 @@ public abstract class AbstractBaseTreeController<T extends BaseTreeEntity, S ext
     public abstract String list(Model model);
 
     /**
-     * 树形结构
-     *
-     * @return
-     */
-    public abstract List<T> treeData(Long id);
-
-    /**
      * 跳转表单页
      *
      * @param entity
@@ -53,6 +47,20 @@ public abstract class AbstractBaseTreeController<T extends BaseTreeEntity, S ext
      * @return
      */
     public abstract String save(T entity, Model model, RedirectAttributes redirectAttributes);
+
+    /**
+     * 删除
+     * @param ids
+     * @return
+     */
+    public abstract BaseResult delete(String ids);
+
+    /**
+     * 树形结构
+     *
+     * @return
+     */
+    public abstract List<T> treeData(Long id);
 
     /**
      * 排序

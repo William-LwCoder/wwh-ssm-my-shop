@@ -29,23 +29,23 @@ var App = function () {
     /**
      * 激活 iCheck
      */
-    var handlerInitICheck = function () {
+    var handlerInitCheckbox = function () {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
             radioClass: 'iradio_minimal-blue'
         });
+
+        // 获取控制端 Checkbox
+        _masterCheckbox = $('input[type="checkbox"].minimal.icheck-master');
+
+        // 获取全部 Checkbox 集合
+        _checkbox = $('input[type="checkbox"].minimal');
     };
 
     /**
      * Checkbox 全选功能
      */
     var handlerCheckboxAll = function () {
-        // 获取控制端 Checkbox
-        _masterCheckbox = $('input[type="checkbox"].minimal.icheck-master');
-
-        // 获取全部 Checkbox 集合
-        _checkbox = $('input[type="checkbox"].minimal');
-
         _masterCheckbox.on("ifClicked", function (e) {
             // 返回 true 表示未选中
             if (e.target.checked) {
@@ -56,6 +56,28 @@ var App = function () {
             else {
                 _checkbox.iCheck("check");
             }
+        });
+    };
+
+    /**
+     * 删除单笔记录
+     * @param url 删除链接
+     * @param id 需要删除数据的 ID
+     * @param msg
+     */
+    var handlerDeleteSingle = function (url, id, msg) {
+        // 可选参数
+        if (!msg) msg = null;
+
+        // 将 ID 放入数组中，以便和批量删除通用
+        _idArray = new Array();
+        _idArray.push(id);
+
+        $("#modal-message").html(msg == null ? "您确定删除数据项吗？" : msg);
+        $("#modal-default").modal("show");
+        // 绑定删除事件
+        $("#btnModalOk").bind("click", function () {
+            handlerDeleteData(url);
         });
     };
 
@@ -77,8 +99,7 @@ var App = function () {
         // 判断用户是否选择了数据项
         if (_idArray.length === 0) {
             $("#modal-message").html("您还没有选择任何数据项，请至少选择一项");
-        }
-        else {
+        } else {
             $("#modal-message").html("您确定删除数据项吗？");
         }
 
@@ -87,33 +108,30 @@ var App = function () {
 
         // 如果用户选择了数据项则调用删除方法
         $("#btnModalOk").unbind("click").bind("click", function () {
-            del();
+            handlerDeleteData(url);
         });
 
         /**
-         * 当前私有函数的私有函数，删除数据
+         * AJAX 异步删除
+         * @param url
          */
-        function del() {
+        var handlerDeleteData = function (url) {
             $("#modal-default").modal("hide");
 
-            // 如果没有选择数据项的处理
-            if (_idArray.length === 0) {
-                // todo
-            }
-            // 删除数据
-            else {
+            if (_idArray.length > 0) {
+                // AJAX 异步删除操作
                 setTimeout(function () {
                     $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: {"ids" : _idArray.toString()},
-                        datatype: "JSON",
-                        success: function (data) {
-                            // 请求成功后，无论是成功还是失败都需要弹出模态框进行提示，所以这里需要先解绑原来的 click 事件
+                        "url": url,
+                        "type": "POST",
+                        "data": {"ids": _idArray.toString()},
+                        "dataType": "JSON",
+                        "success": function (data) {
+                            // 请求成功后，无论是成功或是失败都需要弹出模态框进行提示，所以这里需要先解绑原来的 click 事件
                             $("#btnModalOk").unbind("click");
 
                             // 请求成功
-                            if (data.status == 200) {
+                            if (data.status === 200) {
                                 // 刷新页面
                                 $("#btnModalOk").bind("click", function () {
                                     window.location.reload();
@@ -133,161 +151,61 @@ var App = function () {
                             $("#modal-default").modal("show");
                         }
                     });
-                }, 500);
-
-            }
-        }
-    };
-
-    /**
-     * 初始化 Datatables
-     * @param url
-     * @param columns
-     */
-    var handlerInitDatatables = function (url, columns) {
-        var _dataTable = $("#dataTable").DataTable({
-            "paging": true,
-            "info": true,
-            "lengthChange": false,
-            "ordering": false,
-            "processing": true,
-            "searching": false,
-            "serverSide": true,
-            "deferRender": true,
-            "ajax": {
-                "url": url
-            },
-            "columns": columns,
-            "language": {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 项结果",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页"
-                },
-                "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
-                }
-            },
-            "drawCallback": function(settings, json) {
-                handlerInitICheck();
-                handlerCheckboxAll();
-            }
-        });
-
-        return _dataTable;
-    };
-
-    /**
-     * 显示详情
-     * @param url
-     */
-    var handlerShowDetail = function (url) {
-        // 这里是通过 ajax 请求 html 的方式将 jsp 装载进模态框中
-        $.ajax({
-            url: url,
-            type: "get",
-            dataType: "html",
-            success: function (data) {
-                $("#modal-detail-body").html(data);
-                $("#modal-detail").modal("show");
-            }
-        });
-    };
-
-    /**
-     * 初始化 zTree
-     * @param url
-     * @param autoParam
-     * @param callback
-     */
-    var handlerInitZTree = function (url, autoParam, callback) {
-        var setting = {
-            view: {
-                selectedMulti: false
-            },
-            async: {
-                enable: true,
-                url: url,
-                autoParam: autoParam
+                }, 500)
             }
         };
-
-        $.fn.zTree.init($("#myTree"), setting);
-
-        $("#btnModalOk").bind("click", function () {
-            var zTree = $.fn.zTree.getZTreeObj("myTree");
-            var nodes = zTree.getSelectedNodes();
-            // 未选择
-            if (nodes.length == 0) {
-                alert("请先选择一个节点");
-            }
-            // 已选择
-            else {
-                callback(nodes);
-            }
-        });
-    };
-
-    /**
-     *  初始化 Dropzone
-     * @param opts
-     */
-    var handlerInitDropzone = function (opts) {
-        // 关闭 Dropzone 的自动发现功能
-        Dropzone.autoDiscover = false;
-        // 继承
-        var options = $.extend({}, defaultDropzoneOpts, opts);
-        new Dropzone("#" + options.id, options);
-    };
-
-    return {
-        /**
-         * 初始化
-         */
-        init: function () {
-            handlerInitICheck();
-            handlerCheckboxAll();
-        },
-
-        /**
-         * 批量删除
-         * @param url
-         */
-        deleteMulti: function (url) {
-            hadnlerDeleteMulti(url);
-        },
 
         /**
          * 初始化 Datatables
          * @param url
          * @param columns
-         * @returns {jQuery}
          */
-        initDatatables: function (url, columns) {
-            return handlerInitDatatables(url, columns)
-        },
+        var handlerInitDatatables = function (url, columns) {
+            var _dataTable = $("#dataTable").DataTable({
+                "paging": true,
+                "info": true,
+                "lengthChange": false,
+                "ordering": false,
+                "processing": true,
+                "searching": false,
+                "serverSide": true,
+                "deferRender": true,
+                "ajax": {
+                    "url": url
+                },
+                "columns": columns,
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "drawCallback": function (settings, json) {
+                    handlerInitCheckbox();
+                    handlerCheckboxAll();
+                }
+            });
 
-        /**
-         * 显示详情
-         * @param url
-         */
-        showDetail: function (url) {
-            handlerShowDetail(url);
-        },
+            return _dataTable;
+        };
 
         /**
          * 初始化 zTree
@@ -295,20 +213,127 @@ var App = function () {
          * @param autoParam
          * @param callback
          */
-        initZTree: function (url, autoParam, callback) {
-            handlerInitZTree(url, autoParam, callback);
-        },
+        var handlerInitZTree = function (url, autoParam, callback) {
+            var setting = {
+                view: {
+                    selectedMulti: false
+                },
+                async: {
+                    enable: true,
+                    url: url,
+                    autoParam: autoParam
+                }
+            };
+
+            $.fn.zTree.init($("#myTree"), setting);
+
+            $("#btnModalOk").bind("click", function () {
+                var zTree = $.fn.zTree.getZTreeObj("myTree");
+                var nodes = zTree.getSelectedNodes();
+                // 未选择
+                if (nodes.length == 0) {
+                    alert("请先选择一个节点");
+                }
+                // 已选择
+                else {
+                    callback(nodes);
+                }
+            });
+        };
 
         /**
-         * 初始化 Dropzone
+         *  初始化 Dropzone
          * @param opts
          */
-        initDropzone: function (opts) {
-            handlerInitDropzone(opts);
-        }
-    }
-}();
+        var handlerInitDropzone = function (opts) {
+            // 关闭 Dropzone 的自动发现功能
+            Dropzone.autoDiscover = false;
+            // 继承
+            var options = $.extend({}, defaultDropzoneOpts, opts);
+            new Dropzone("#" + options.id, options);
+        };
 
-$(document).ready(function () {
-    App.init();
-});
+        /**
+         * 显示详情
+         * @param url
+         */
+        var handlerShowDetail = function (url) {
+            // 这里是通过 ajax 请求 html 的方式将 jsp 装载进模态框中
+            $.ajax({
+                url: url,
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    $("#modal-detail-body").html(data);
+                    $("#modal-detail").modal("show");
+                }
+            });
+        };
+
+        return {
+
+            /**
+             * 初始化
+             */
+            init: function () {
+                handlerInitCheckbox();
+                handlerCheckboxAll();
+            },
+
+            /**
+             * 删除单笔数据
+             * @param url
+             */
+            deleteSingle: function (url, id, msg) {
+                handlerDeleteSingle(url, id, msg);
+            },
+
+            /**
+             * 批量删除
+             * @param url
+             */
+            deleteMulti: function (url) {
+                handlerDeleteMulti(url);
+            },
+
+            /**
+             * 初始化 Datatables
+             * @param url
+             * @param columns
+             * @returns {jQuery}
+             */
+            initDatatables: function (url, columns) {
+                return handlerInitDatatables(url, columns)
+            },
+
+            /**
+             * 初始化 zTree
+             * @param url
+             * @param autoParam
+             * @param callback
+             */
+            initZTree: function (url, autoParam, callback) {
+                handlerInitZTree(url, autoParam, callback);
+            },
+
+            /**
+             * 初始化 Dropzone
+             * @param opts
+             */
+            initDropzone: function (opts) {
+                handlerInitDropzone(opts);
+            },
+
+            /**
+             * 显示详情
+             * @param url
+             */
+            showDetail: function (url) {
+                handlerShowDetail(url);
+            }
+        }
+    }();
+
+    $(document).ready(function () {
+        App.init();
+    });

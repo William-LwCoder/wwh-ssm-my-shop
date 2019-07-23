@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,61 +33,74 @@ public class UploadController {
     /**
      * 文件上传
      *
-     * @param dropzFile Dropzone 上传文件
-     * @param editorFile wangEditor 上传文件
-     * @param request
+     * @param dropFile   Dropzone
+     * @param editorFiles wangEditor
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "upload", method = RequestMethod.POST)
-    public Map<String, Object> upload(MultipartFile dropzFile, MultipartFile editorFile, HttpServletRequest request) {
+    public Map<String, Object> upload(MultipartFile dropFile, MultipartFile[] editorFiles, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
 
-        MultipartFile myFile = dropzFile == null ? editorFile : dropzFile;
+        // Dropzone 上传
+        if (dropFile != null) {
+            result.put("fileName", writeFile(dropFile, request));
+        }
 
-        // 获取上传的原始文件名
-        String fileName = myFile.getOriginalFilename();
-        // 设置文件上传路径
-        String filePath = request.getSession().getServletContext().getRealPath(UPLOAD_PATH);
+        // wangEditor 上传
+        if (editorFiles != null && editorFiles.length > 0) {
+            List<String> fileNames = new ArrayList<>();
+
+            for (MultipartFile editorFile : editorFiles) {
+                fileNames.add(writeFile(editorFile, request));
+            }
+
+            result.put("errno", 0);
+            result.put("data", fileNames);
+        }
+
+        return result;
+    }
+
+    /**
+     * 将图片写入指定目录
+     *
+     * @param multipartFile
+     * @param request
+     * @return 返回文件完整路径
+     */
+    private String writeFile(MultipartFile multipartFile, HttpServletRequest request) {
         // 获取文件后缀
-        String fileSuffix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+        String fileName = multipartFile.getOriginalFilename();
+        String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
 
-        // 判断并创建上传用的文件夹
+        // 文件存放路径
+        String filePath = request.getSession().getServletContext().getRealPath(UPLOAD_PATH);
+
+        // 判断路径是否存在，不存在则创建文件夹
         File file = new File(filePath);
         if (!file.exists()) {
             file.mkdir();
         }
-        // 重新设置文件名为 UUID，以确保唯一
-        file = new File(filePath, UUID.randomUUID() + fileSuffix);
 
+        // 将文件写入目标
+        file = new File(filePath, UUID.randomUUID() + fileSuffix);
         try {
-            // 写入文件
-            myFile.transferTo(file);
+            multipartFile.transferTo(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Dropzone 图片返回格式
-        if (dropzFile != null) {
-            // 返回 JSON 数据，这里只带入了文件名
-            result.put("fileName", UPLOAD_PATH + file.getName());
-        }
-        // wangEditor 图片返回格式
-        else {
-            /**
-             * 获取服务端路径
-             * scheme: 服务器提供的协议 http/https
-             * serverName: 服务器名称 localhost/ip/domain
-             * serverPort: 服务器端口
-             * contextPath: 项目地址
-             */
-            String serverPath = String.format("%s://%s:%s%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath(), UPLOAD_PATH);
-
-            // 返回给 wangEditor 的数据格式
-            result.put("errno", 0);
-            result.put("data", new String[]{serverPath + file.getName()});
-        }
-
-        return result;
+        /**
+         * 获取服务端路径
+         * scheme: 服务器提供的协议 http/https
+         * serverName: 服务器名称 localhost/ip/domain
+         * serverPort: 服务器端口
+         * contextPath: 项目地址
+         */
+        // TODO 是否需要 contextPath
+        // 返回文件完整路径
+        String serverPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        return serverPath + UPLOAD_PATH + file.getName();
     }
 }

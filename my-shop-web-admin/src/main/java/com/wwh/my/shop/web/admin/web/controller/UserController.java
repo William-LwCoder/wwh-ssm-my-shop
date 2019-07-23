@@ -1,7 +1,6 @@
 package com.wwh.my.shop.web.admin.web.controller;
 
 import com.wwh.my.shop.commons.dto.BaseResult;
-import com.wwh.my.shop.commons.dto.PageInfo;
 import com.wwh.my.shop.domain.TbUser;
 import com.wwh.my.shop.web.admin.abstracts.AbstractBaseController;
 import com.wwh.my.shop.web.admin.service.TbUserService;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户管理
@@ -124,31 +121,6 @@ public class UserController extends AbstractBaseController<TbUser, TbUserService
         }
 
         return baseResult;
-    }
-
-    /**
-     * 分页查询
-     *
-     * @param request
-     * @param tbUser
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "page", method = RequestMethod.GET)
-    @Override
-    public PageInfo<TbUser> page(HttpServletRequest request, TbUser tbUser) {
-        String strDraw = request.getParameter("draw");
-        String strStart = request.getParameter("start");
-        String strLength = request.getParameter("length");
-
-        int draw = strDraw == null ? 0 : Integer.parseInt(strDraw);
-        int start = strStart == null ? 0 : Integer.parseInt(strStart);
-        int length = strLength == null ? 0 : Integer.parseInt(strLength);
-
-        // 封装 Datatables 需要的结果
-        PageInfo<TbUser> pageInfo = service.page(start, length, draw, tbUser);
-
-        return pageInfo;
     }
 
     /**

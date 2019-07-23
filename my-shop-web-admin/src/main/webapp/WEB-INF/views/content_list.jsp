@@ -199,9 +199,10 @@
             {
                 "data": function (row, type, val, meta) {
                     var detailUrl = "/content/detail?id=" + row.id;
+                    var deleteUrl = "/content/delete";
                     return '<button type="button" class="btn btn-sm btn-default" onclick="App.showDetail(\'' + detailUrl + '\');"><i class="fa fa-search"></i> 查看</button>&nbsp;&nbsp;&nbsp;' +
                         '<a href="/content/form?id=' + row.id + '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> 编辑</a>&nbsp;&nbsp;&nbsp;' +
-                        '<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i> 删除</a>';
+                        '<button type="button" class="btn btn-sm btn-danger" onclick="App.deleteSingle(\'' + deleteUrl + '\', \'' + row.id + '\')"><i class="fa fa-trash-o"></i> 删除</button>';
                 }
             }
         ];
@@ -221,4 +222,3 @@
 </script>
 </body>
 </html>
-

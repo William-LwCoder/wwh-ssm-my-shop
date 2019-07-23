@@ -4,6 +4,7 @@ import com.wwh.my.shop.commons.dto.BaseResult;
 import com.wwh.my.shop.domain.TbContentCategory;
 import com.wwh.my.shop.web.admin.abstracts.AbstractBaseTreeController;
 import com.wwh.my.shop.web.admin.service.TbContentCategoryService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -71,22 +72,6 @@ public class ContentCategoryController extends AbstractBaseTreeController<TbCont
     }
 
     /**
-     * 树形结构
-     *
-     * @param id
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "tree/data", method = RequestMethod.POST)
-    @Override
-    public List<TbContentCategory> treeData(Long id) {
-        if (id == null) {
-            id = 0L;
-        }
-        return service.selectByPid(id);
-    }
-
-    /**
      * 跳转表单页
      *
      * @param tbContentCategory
@@ -123,5 +108,42 @@ public class ContentCategoryController extends AbstractBaseTreeController<TbCont
             return "content_category_form";
         }
 
+    }
+
+    /**
+     * 删除
+     *
+     * @param ids
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @Override
+    public BaseResult delete(String ids) {
+        BaseResult baseResult = null;
+        if (StringUtils.isNotBlank(ids)) {
+            service.delete(Long.parseLong(ids));
+            baseResult = BaseResult.success("删除分类及其子类及其全部内容成功");
+        } else {
+            baseResult = BaseResult.fail("删除分类失败");
+        }
+
+        return baseResult;
+    }
+
+    /**
+     * 树形结构
+     *
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "tree/data", method = RequestMethod.POST)
+    @Override
+    public List<TbContentCategory> treeData(Long id) {
+        if (id == null) {
+            id = 0L;
+        }
+        return service.selectByPid(id);
     }
 }
