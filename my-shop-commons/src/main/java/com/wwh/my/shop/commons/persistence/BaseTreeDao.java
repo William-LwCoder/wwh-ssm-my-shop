@@ -16,24 +16,28 @@ public interface BaseTreeDao<T extends BaseTreeEntity> {
 
     /**
      * 查询表全部信息
+     *
      * @return
      */
     List<T> selectAll();
 
     /**
      * 新增
+     *
      * @param entity
      */
     void insert(T entity);
 
     /**
      * 删除
+     *
      * @param id
      */
-    void delete(Long id);
+    void delete(String[] id);
 
     /**
      * 根据 ID 查询信息
+     *
      * @param id
      * @return
      */
@@ -41,12 +45,14 @@ public interface BaseTreeDao<T extends BaseTreeEntity> {
 
     /**
      * 更新
+     *
      * @param entity
      */
     void update(T entity);
 
     /**
      * 根据父级节点 ID 查询所有子节点
+     *
      * @param pid
      * @return
      */

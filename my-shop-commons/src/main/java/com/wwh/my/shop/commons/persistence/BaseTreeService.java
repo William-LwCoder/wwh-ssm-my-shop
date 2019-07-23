@@ -18,12 +18,14 @@ public interface BaseTreeService<T extends BaseTreeEntity> {
 
     /**
      * 查询表全部信息
+     *
      * @return
      */
     List<T> selectAll();
 
     /**
      * 保存信息
+     *
      * @param entity
      * @return
      */
@@ -31,12 +33,14 @@ public interface BaseTreeService<T extends BaseTreeEntity> {
 
     /**
      * 删除信息
+     *
      * @param id
      */
     void delete(Long id);
 
     /**
      * 根据 ID 获取信息
+     *
      * @param id
      * @return
      */
@@ -44,6 +48,7 @@ public interface BaseTreeService<T extends BaseTreeEntity> {
 
     /**
      * 根据父级节点 ID 查询所有子节点
+     *
      * @param pid
      * @return
      */

@@ -43,7 +43,7 @@ public abstract class AbstractBaseTreeServiceImpl<T extends BaseTreeEntity, D ex
     @Transactional(readOnly = false)
     @Override
     public void delete(Long id) {
-        dao.delete(id);
+        dao.delete(new String[]{String.valueOf(id)});
     }
 
     /**

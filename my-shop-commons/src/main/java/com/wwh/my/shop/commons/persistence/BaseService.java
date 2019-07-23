@@ -19,12 +19,14 @@ public interface BaseService<T extends BaseEntity> {
 
     /**
      * 查询表全部信息
+     *
      * @return
      */
     List<T> selectAll();
 
     /**
      * 保存信息
+     *
      * @param entity
      * @return
      */
@@ -32,12 +34,14 @@ public interface BaseService<T extends BaseEntity> {
 
     /**
      * 删除信息
+     *
      * @param id
      */
     void delete(Long id);
 
     /**
      * 根据 ID 获取信息
+     *
      * @param id
      * @return
      */
@@ -45,12 +49,14 @@ public interface BaseService<T extends BaseEntity> {
 
     /**
      * 批量删除
+     *
      * @param ids
      */
     void deleteMulti(String[] ids);
 
     /**
      * 分页查询
+     *
      * @param start
      * @param length
      * @param draw
@@ -61,6 +67,7 @@ public interface BaseService<T extends BaseEntity> {
 
     /**
      * 查询总笔数
+     *
      * @param entity
      * @return
      */
