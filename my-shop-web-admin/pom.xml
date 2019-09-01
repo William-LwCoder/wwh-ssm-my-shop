@@ -86,13 +86,6 @@
             <artifactId>spring-jdbc</artifactId>
         </dependency>
         <!-- Database End -->
-
-        <!-- Commons Begin -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-        </dependency>
-        <!-- Commons End -->
     </dependencies>
 
 </project>

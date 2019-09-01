@@ -47,10 +47,16 @@
         </dependency>
         <!-- Log End -->
 
+        <!-- Commons Begin -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
+        <!-- Commons End -->
 
         <!-- Servlet Begin -->
         <dependency>
@@ -92,9 +98,6 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
         <!-- Hibernate-Validator End -->
-
     </dependencies>
-
-
 
 </project>
