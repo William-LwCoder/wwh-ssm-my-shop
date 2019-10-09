@@ -7,7 +7,6 @@ import com.wwh.my.shop.web.api.web.dto.TbContentDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,21 +43,20 @@ public class TbContentController {
     }
 
     /**
-     * 根据类别 ID 查询内容列表
-     * @param categoryId
+     * 幻灯片接口
      * @return
      */
-    @RequestMapping(value = "{category_id}", method = RequestMethod.GET)
-    public BaseResult findContentByCategoryId(@PathVariable(value = "category_id") Long categoryId) {
+    @RequestMapping(value = "ppt", method = RequestMethod.GET)
+    public BaseResult findPPT() {
         List<TbContentDTO> tbContentDTOS = null;
-        List<TbContent> tbContents = tbContentService.selectByCategoryId(categoryId);
+        List<TbContent> tbContents = tbContentService.selectByCategoryId(89L);
 
         if (tbContents != null && tbContents.size() > 0) {
             tbContentDTOS = new ArrayList<>();
             for (TbContent tbContent : tbContents) {
-                TbContentDTO tbContentDTO = new TbContentDTO();
-                BeanUtils.copyProperties(tbContent, tbContentDTO);
-                tbContentDTOS.add(tbContentDTO);
+                TbContentDTO dto = new TbContentDTO();
+                BeanUtils.copyProperties(tbContent, dto);
+                tbContentDTOS.add(dto);
             }
         }
 

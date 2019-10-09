@@ -10,7 +10,7 @@ var App = function () {
     // 默认的 Dropzone 参数
     var defaultDropzoneOpts = {
         url: "",
-        paramName: "dropzFile", // 传到后台的参数名称
+        paramName: "dropFile", // 传到后台的参数名称
         maxFiles: 1, // 一次性上传的文件数量上限
         maxFilesize: 2, // 文件大小，单位：MB
         acceptedFiles: ".jpg,.gif,.png,.jpeg", // 上传的类型
@@ -314,7 +314,7 @@ var App = function () {
          * @returns {jQuery}
          */
         initDatatables: function (url, columns) {
-            return handlerInitDatatables(url, columns)
+            return handlerInitDatatables(url, columns);
         },
 
         /**
