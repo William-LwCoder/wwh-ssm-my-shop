@@ -68,6 +68,20 @@ public class MapperUtils {
     }
 
     /**
+     * 将指定节点的 JSON 数据转换为 JavaBean
+     *
+     * @param jsonString
+     * @param clazz
+     * @return
+     * @throws Exception
+     */
+    public static <T> T json2pojoByTree(String jsonString, String treeNode, Class<T> clazz) throws Exception {
+        JsonNode jsonNode = objectMapper.readTree(jsonString);
+        JsonNode data = jsonNode.findPath(treeNode);
+        return json2pojo(data.toString(), clazz);
+    }
+
+    /**
      * 字符串转换为 Map<String, Object>
      *
      * @param jsonString
@@ -190,12 +204,10 @@ public class MapperUtils {
      * @throws Exception
      */
     public static <T> List<T> json2listByTree(String jsonStr, String treeNode, Class<T> clazz) throws Exception {
-        ObjectMapper objectMapper = MapperUtils.getInstance();
         JsonNode jsonNode = objectMapper.readTree(jsonStr);
         JsonNode data = jsonNode.findPath(treeNode);
-        return  json2list(data.toString(), clazz);
+        return json2list(data.toString(), clazz);
     }
-
 
     /**
      * 获取泛型的 Collection Type

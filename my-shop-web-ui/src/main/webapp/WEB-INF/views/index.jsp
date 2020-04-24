@@ -7,13 +7,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
 <html>
 <head>
-    <title>MyShop - 首页</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
-    <script type="text/javascript" src="/static/js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="/static/js/index.js"></script>
-    <script type="text/javascript" src="/static/js/jquery.SuperSlide.2.1.1.source.js"></script>
+    <title>MyShop | 首页</title>
+    <link rel="stylesheet" href="/static/css/index.css" />
+
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/jquery.SuperSlide.2.1.1.source.js"></script>
 </head>
 <body>
 <!--侧边-->
@@ -69,7 +72,12 @@
             </li>
         </ul>
         <ul class="header-right">
-            <li class="denglu">Hi~<a class="red" href="dengl.html">请登录!</a> <a href="zhuc.html">[免费注册]</a></li>
+            <c:if test="${tbUser != null}">
+                <li class="denglu">Hi~ ${tbUser.username} 欢迎回来 <a class="red" href="/logout">[注销]</a></li>
+            </c:if>
+            <c:if test="${tbUser == null}">
+                <li class="denglu">Hi~<a class="red" href="/login">请登录!</a> <a href="/register">[免费注册]</a></li>
+            </c:if>
             <li class="shu"></li>
             <li class="denglu"><a class="ing_ps" href="#">我的收藏</a></li>
             <li class="shu"></li>
@@ -575,7 +583,7 @@
 <!--轮播图-->
 <div id="lunbo">
     <ul id="one">
-        <c:forEach items="${ppt}" var="ppt" varStatus="status">
+        <c:forEach items="${ppt}" var="ppt">
             <li><a href="#"><img src="${ppt.pic}" alt="${ppt.title}" title="${ppt.title}"></a></li>
         </c:forEach>
     </ul>
